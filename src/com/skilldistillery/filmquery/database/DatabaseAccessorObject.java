@@ -58,6 +58,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) throws SQLException {
 		Film film = null;
+//		if( film == null) {
+//			System.out.println("No ID exist");
+//		}
 
 		String sql = "SELECT id, title, description, release_year,"
 				+ "language_id, rental_duration, rental_rate, length, replacement_cost, rating,"
@@ -76,18 +79,16 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setTitle(filmResult.getString("title"));
 			film.setDescription(filmResult.getString("description"));
 			film.setReleaseYear(filmResult.getInt("release_year"));
-//			film.setLanguage(filmResult.getInt("language_id"));
-//			film.setRentalDuration(filmResult.getInt("rental_duration"));
-//			film.setRate(filmResult.getDouble("rental_rate"));
-//			film.setLength(filmResult.getInt("length"));
-//			film.setReplacementCost(filmResult.getDouble("replacement_cost"));
+			film.setLanguage(filmResult.getInt("language_id"));
+			film.setRentalDuration(filmResult.getInt("rental_duration"));
+			film.setRate(filmResult.getDouble("rental_rate"));
+			film.setLength(filmResult.getInt("length"));
+			film.setReplacementCost(filmResult.getDouble("replacement_cost"));
 			film.setRating(filmResult.getString("rating"));
-//			film.setSpecialFeatures(filmResult.getString("special_features"));
+			film.setSpecialFeatures(filmResult.getString("special_features"));
 
 		}
-
 		return film;
-
 	}
 
 	@Override
@@ -168,8 +169,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return actor;
+
 	}
+		
+		public void noFilmFound() {
+	}   
 
 
 

@@ -85,9 +85,12 @@ public class FilmQueryApp {
 		sc.nextLine();
 		try {
 			Film film = db.findFilmById(id);
-			System.out.println(film);
+			if(film != null) {				
+				System.out.println("Film release year: " + film.getReleaseYear() + " |Film rathing: " + film.getRating() + " |Description: " + film.getDescription());
+			} else {
+				System.err.println("A film with the ID " + id + " was not found.");
+			}
 		} catch (SQLException e) { 
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
