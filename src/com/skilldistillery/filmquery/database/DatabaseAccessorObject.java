@@ -79,7 +79,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setTitle(filmResult.getString("title"));
 			film.setDescription(filmResult.getString("description"));
 			film.setReleaseYear(filmResult.getInt("release_year"));
-			film.setLanguage(filmResult.getInt("language_id"));
+			film.setLanguageId(filmResult.getInt("language_id"));
 			film.setRentalDuration(filmResult.getInt("rental_duration"));
 			film.setRate(filmResult.getDouble("rental_rate"));
 			film.setLength(filmResult.getInt("length"));
@@ -89,6 +89,26 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		}
 		return film;
+	}
+
+	public String findFilmLanguage(int filmLanguageId) {
+		String sql = "SELECT name FROM language WHERE id = ?";
+
+		Connection conn;
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setInt(1, filmLanguageId);
+			ResultSet filmLanguageResult = stmt.executeQuery();
+			if (filmLanguageResult.next()) {
+				return filmLanguageResult.getString("name");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -128,20 +148,19 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 		return films;
-		
+
 	}
 
 	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
-		
+
 		List<Actor> actor = new ArrayList<>();
 
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			String sql = "SELECT id, title, description release_year, language_id, rental_duration,";
-					sql+= "rental_rate, length, replacement_cost, rating, special_features,"
-							+ "FROM film JOIN film_actor ON film.id = film_actor.film.id"
-							+ "WHERE actor_id = ?";
+			sql += "rental_rate, length, replacement_cost, rating, special_features,"
+					+ "FROM film JOIN film_actor ON film.id = film_actor.film.id" + "WHERE actor_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 
@@ -169,12 +188,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return actor;
 
 	}
-		
-		public void noFilmFound() {
-	}   
-
-
 
 }

@@ -40,9 +40,9 @@ public class FilmQueryApp {
 		case 1:
 			findFilmById();
 			break;
-//		case 2:
-//
-//			break;
+		case 2:
+			findFilmBySearchKeyword();
+			break;
 //		case 3:
 //			System.out.println("GoodBye");
 //			return false;
@@ -52,6 +52,13 @@ public class FilmQueryApp {
 			break;
 		}
 		return false;
+	}
+
+	private void findFilmBySearchKeyword() {
+		System.out.println("Please Enter A Key Word.");
+		sc.next();
+		sc.nextLine();
+		
 	}
 
 	private void launch() {
@@ -85,14 +92,18 @@ public class FilmQueryApp {
 		sc.nextLine();
 		try {
 			Film film = db.findFilmById(id);
-			if(film != null) {				
-				System.out.println("Film release year: " + film.getReleaseYear() + " |Film rathing: " + film.getRating() + " |Description: " + film.getDescription());
+			if(film != null) {
+				String filmLanguage = db.findFilmLanguage(film.getLanguageId());
+				film.setLanguage(filmLanguage);
+				System.out.println("|Film release year: " + film.getReleaseYear() + "\n|Film rating: " + film.getRating() + "\n|Description: " + film.getDescription() + "\n|Language: " + film.getLanguage());
 			} else {
-				System.err.println("A film with the ID " + id + " was not found.");
+				System.out.println("Film with film ID " + id + " was not found.");
 			}
+			
 		} catch (SQLException e) { 
 			e.printStackTrace();
 		}
 	}
+	
 
 }
